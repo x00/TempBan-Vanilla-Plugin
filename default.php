@@ -15,11 +15,13 @@ $PluginInfo['TempBan'] = array(
 class TempBan extends Gdn_Plugin {
 
     public function ProfileController_BeforeProfileOptions_Handler($Sender){
-        $Sender->EventArguments['ProfileOptions'][] = array(
-            'Text' => Sprite('SpBan').' '.( !$Sender->User->Banned ? T('Temporary Ban'): T('Temporary Unban')),
-            'Url' => '/user/tempban/' . intval($Sender->User->UserID) . '/' . intval($Sender->User->Banned),
-            'CssClass' => 'Popup'
-        );
+        if(Gdn::Session()->CheckPermission('Garden.Moderation.Manage')){
+            $Sender->EventArguments['ProfileOptions'][] = array(
+                'Text' => Sprite('SpBan').' '.( !$Sender->User->Banned ? T('Temporary Ban'): T('Temporary Unban')),
+                'Url' => '/user/tempban/' . intval($Sender->User->UserID) . '/' . intval($Sender->User->Banned),
+                'CssClass' => 'Popup'
+            );
+        }
     }
 
     public function UserController_TempBan_Create($Sender, $Args) {
@@ -46,8 +48,8 @@ class TempBan extends Gdn_Plugin {
                 $Months  = $Sender->Form->GetValue('TempBanPeriodMonths');
                 $Years   = $Sender->Form->GetValue('TempBanPeriodYears');
 
-                if(!(empty($Minutes) && empty($Hours) && empty($Days)  && empty($Months) && empty($Years))){
-                    $AutoExpirePeriod = Gdn_Format::ToDateTime(strtotime("+{$Years} years {$Months} months {$Days} days  {$Hours} hours {$Minutes} minutes"));
+                if(!(empty($Minutes) && empty($Hours) && empty($Days) && empty($Months) && empty($Years))){
+                    $AutoExpirePeriod = Gdn_Format::ToDateTime(strtotime("+{$Years} years {$Months} months {$Days} days {$Hours} hours {$Minutes} minutes"));
                 }else{
                     $Sender->Form->AddError('ValidateRequired', 'Ban Period');
                 }
