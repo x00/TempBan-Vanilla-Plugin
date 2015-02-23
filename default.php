@@ -4,7 +4,7 @@
 $PluginInfo['TempBan'] = array(
    'Name' => 'Temp Ban',
    'Description' => 'Allows an admin/moderator to ban someone for a fixed time, after which the ban will expire.',
-   'Version' => '0.1b',
+   'Version' => '0.1.1b',
    'Author' => "Paul Thomas",
    'RequiredApplications' => array('Vanilla' => '2.1'),
    'MobileFriendly' => TRUE,
